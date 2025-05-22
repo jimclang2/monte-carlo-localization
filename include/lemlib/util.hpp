@@ -1,9 +1,9 @@
 #pragma once
 
-#include <cmath>
-#include <vector>
 #include "lemlib/chassis/chassis.hpp"
 #include "lemlib/pose.hpp"
+#include <cmath>
+#include <vector>
 
 namespace lemlib {
 /**
@@ -56,7 +56,8 @@ constexpr float radToDeg(float rad) { return rad * 180 / M_PI; }
 constexpr float degToRad(float deg) { return deg * M_PI / 180; }
 
 /**
- * @brief Sanitize an angle so its positive and within the range of 0 to 2pi or 0 to 360
+ * @brief Sanitize an angle so its positive and within the range of 0 to 2pi or
+ * 0 to 360
  *
  * @param angle the angle to sanitize
  * @param radians whether the angle is in radians or no. True by default
@@ -78,7 +79,8 @@ constexpr float degToRad(float deg) { return deg * M_PI / 180; }
 constexpr float sanitizeAngle(float angle, bool radians = true);
 
 /**
- * @brief Calculate the error between 2 angles. Useful when calculating the error between 2 headings
+ * @brief Calculate the error between 2 angles. Useful when calculating the
+ * error between 2 headings
  *
  * @param target target angle
  * @param position position angle
@@ -140,16 +142,20 @@ float avg(std::vector<float> values);
 float ema(float current, float previous, float smooth);
 
 /**
- * @brief Get the signed curvature of a circle that intersects the first pose and the second pose
+ * @brief Get the signed curvature of a circle that intersects the first pose
+ * and the second pose
  *
- * This is a very niche function that is only used in Pure Pursuit and Boomerang. It calculates the curvature of a
- * circle that is tangent to the first pose and intersects the second pose. It's also signed to indicate whether the
- * robot should turn clockwise or counter-clockwise to get to the second pose
+ * This is a very niche function that is only used in Pure Pursuit and
+ * Boomerang. It calculates the curvature of a circle that is tangent to the
+ * first pose and intersects the second pose. It's also signed to indicate
+ * whether the robot should turn clockwise or counter-clockwise to get to the
+ * second pose
  *
  * @note The circle will be tangent to the theta value of the first pose
- * @note The curvature is signed. Positive curvature means the circle is going clockwise, negative means
- * counter-clockwise
- * @note Theta has to be in radians and in standard form. That means 0 is right and increases counter-clockwise
+ * @note The curvature is signed. Positive curvature means the circle is going
+ * clockwise, negative means counter-clockwise
+ * @note Theta has to be in radians and in standard form. That means 0 is right
+ * and increases counter-clockwise
  *
  * @param pose the first pose
  * @param other the second pose

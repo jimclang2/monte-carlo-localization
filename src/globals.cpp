@@ -29,14 +29,9 @@ pros::Imu imu(15);
 
 pros::adi::Pneumatics clamp('A', false);
 
-lemlib::Drivetrain drivetrain(
-    &dt_left,  // left motor group
-    &dt_right, // right motor group
-    12.875,
-    lemlib::Omniwheel::OLD_325, 
-    480,                       
-    8 
-);
+lemlib::Drivetrain drivetrain(&dt_left,  // left motor group
+                              &dt_right, // right motor group
+                              12.875, lemlib::Omniwheel::OLD_325, 480, 8);
 
 lemlib::ControllerSettings
     linearController(6,   // proportional gain (kP)
@@ -60,7 +55,7 @@ lemlib::ControllerSettings
                       600, // small error range timeout, in milliseconds
                       3,   // large error range, in degrees
                       800, // large error range timeout, in milliseconds
-                      40    // maximum acceleration (slew)
+                      40   // maximum acceleration (slew)
     );
 
 // Create a new rotation sensor on port 11 (adjust the port number as needed)
@@ -73,12 +68,12 @@ lemlib::TrackingWheel horizontal1(&horizontalRotation, lemlib::Omniwheel::NEW_2,
 
 // Update the OdomSensors object to include the new horizontal tracking wheel
 lemlib::OdomSensors sensors(&horizontal1, // vertical tracking wheel
-                            nullptr, // vertical tracking wheel 2, set to
+                            nullptr,      // vertical tracking wheel 2, set to
                                      // nullptr as we don't have a second one
                             nullptr, // horizontal tracking wheel
-                            nullptr,      // horizontal tracking wheel 2, set to
+                            nullptr, // horizontal tracking wheel 2, set to
                                      // nullptr as we don't have a second one
-                            &imu // inertial sensor
+                            &imu     // inertial sensor
 );
 
 // input curve for throttle input during driver control
@@ -101,5 +96,5 @@ lemlib::Chassis chassis(drivetrain, linearController, angularController,
 
 pros::Distance dNorth(3);
 pros::Distance dEast(17);
-pros::Distance dNorthW(10); //13.75
+pros::Distance dNorthW(10); // 13.75
 pros::Distance dWest(16);

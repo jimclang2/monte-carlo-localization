@@ -199,10 +199,16 @@ void skills1() {
   // Move to the center, then turn to and touch the right side Mogo.
   chassis.moveToPoint(0, 15.5, 800);
 <<<<<<< HEAD
-  chassis.turnToPoint(19, 15.5, 800, {.forwards = false,.direction=lemlib::AngularDirection::CCW_COUNTERCLOCKWISE, .maxSpeed=100});
-  chassis.moveToPoint(16.5, 15.5, 850, {.forwards = false, .maxSpeed=100, .earlyExitRange = 2},
+  chassis.turnToPoint(
+      19, 15.5, 800,
+      {.forwards = false,
+       .direction = lemlib::AngularDirection::CCW_COUNTERCLOCKWISE,
+       .maxSpeed = 100});
+  chassis.moveToPoint(16.5, 15.5, 850,
+                      {.forwards = false, .maxSpeed = 100, .earlyExitRange = 2},
                       false);
-  chassis.moveToPoint(20, 15.5, 550, {.forwards = false, .maxSpeed = 100}, true);
+  chassis.moveToPoint(20, 15.5, 550, {.forwards = false, .maxSpeed = 100},
+                      true);
 =======
   chassis.turnToPoint(19, 15.5, 1000, {.forwards = false, .maxSpeed = 100});
   chassis.moveToPoint(16.5, 15.5, 850,
@@ -396,9 +402,8 @@ void skills1() {
   // back into the wall to use the distance sensor to reorient. 0 theta and fix
   // the x
 <<<<<<< HEAD
-  
-  chassis.moveToPose(46, 28, 90, 1000,
-                     {.horizontalDrift = 9}, true);
+
+  chassis.moveToPose(46, 28, 90, 1000, {.horizontalDrift = 9}, true);
 =======
   chassis.moveToPose(46, 28, 90, 1000, {.horizontalDrift = 9}, true);
 >>>>>>> 252dc33977fe015358a5a093025069c8273f7873
@@ -434,7 +439,7 @@ void skills1() {
   // Reset Y, keep current X and theta
   chassis.setPose(chassis.getPose().x, new_y, chassis.getPose().theta);
 <<<<<<< HEAD
-  // Continue with movement 
+  // Continue with movement
   chassis.moveToPoint(chassis.getPose().x - 5, chassis.getPose().y, 600,
                       {.earlyExitRange = 1});
 =======

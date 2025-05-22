@@ -1,14 +1,14 @@
 #pragma once
 
-#include "lemlib/logger/message.hpp"
 #include "lemlib/logger/baseSink.hpp"
+#include "lemlib/logger/message.hpp"
 
 namespace lemlib {
 /**
  * @brief Sink for sending messages to the terminal.
  *
- * This is the primary way of interacting with LemLib's logging implementation. This sink is used for printing useful
- * information to the user's terminal.
+ * This is the primary way of interacting with LemLib's logging implementation.
+ * This sink is used for printing useful information to the user's terminal.
  * <h3> Example Usage </h3>
  * @code
  * lemlib::infoSink()->setLowestLevel(lemlib::Level::INFO);
@@ -20,17 +20,18 @@ namespace lemlib {
  * @endcode
  */
 class InfoSink : public BaseSink {
-    public:
-        /**
-         * @brief Construct a new Info Sink object
-         */
-        InfoSink();
-    private:
-        /**
-         * @brief Log the given message
-         *
-         * @param message
-         */
-        void sendMessage(const Message& message) override;
+public:
+  /**
+   * @brief Construct a new Info Sink object
+   */
+  InfoSink();
+
+private:
+  /**
+   * @brief Log the given message
+   *
+   * @param message
+   */
+  void sendMessage(const Message &message) override;
 };
 } // namespace lemlib

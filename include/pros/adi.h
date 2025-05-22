@@ -12,10 +12,11 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
+ *
  * \defgroup c-adi ADI (TriPort) C API
  * \note The external ADI API can be found [here.](@ref ext-adi)
- * \note Additional example code for this module can be found in its [Tutorial.](@ref adi)
+ * \note Additional example code for this module can be found in its
+ * [Tutorial.](@ref adi)
  */
 
 #ifndef _PROS_ADI_H_
@@ -46,49 +47,51 @@ namespace pros {
  * Represents the port type for an ADI port.
  */
 typedef enum adi_port_config_e {
-	E_ADI_ANALOG_IN = 0,
-	E_ADI_ANALOG_OUT = 1,
-	E_ADI_DIGITAL_IN = 2,
-	E_ADI_DIGITAL_OUT = 3,
+  E_ADI_ANALOG_IN = 0,
+  E_ADI_ANALOG_OUT = 1,
+  E_ADI_DIGITAL_IN = 2,
+  E_ADI_DIGITAL_OUT = 3,
 
 #ifdef _INTELLISENSE
 #define _DEPRECATE_DIGITAL_IN = E_ADI_DIGITAL_IN
 #define _DEPRECATE_ANALOG_IN = E_ADI_ANALOG_IN
 #else
-#define _DEPRECATE_DIGITAL_IN __attribute__((deprecated("use E_ADI_DIGITAL_IN instead"))) = E_ADI_DIGITAL_IN
-#define _DEPRECATE_ANALOG_IN __attribute__((deprecated("use E_ADI_ANALOG_IN instead"))) = E_ADI_ANALOG_IN
+#define _DEPRECATE_DIGITAL_IN                                                  \
+  __attribute__((deprecated("use E_ADI_DIGITAL_IN instead"))) = E_ADI_DIGITAL_IN
+#define _DEPRECATE_ANALOG_IN                                                   \
+  __attribute__((deprecated("use E_ADI_ANALOG_IN instead"))) = E_ADI_ANALOG_IN
 #endif
 
-	E_ADI_SMART_BUTTON _DEPRECATE_DIGITAL_IN,
-	E_ADI_SMART_POT _DEPRECATE_ANALOG_IN,
+  E_ADI_SMART_BUTTON _DEPRECATE_DIGITAL_IN,
+  E_ADI_SMART_POT _DEPRECATE_ANALOG_IN,
 
-	E_ADI_LEGACY_BUTTON _DEPRECATE_DIGITAL_IN,
-	E_ADI_LEGACY_POT _DEPRECATE_ANALOG_IN,
-	E_ADI_LEGACY_LINE_SENSOR _DEPRECATE_ANALOG_IN,
-	E_ADI_LEGACY_LIGHT_SENSOR _DEPRECATE_ANALOG_IN,
-	E_ADI_LEGACY_GYRO = 10,
-	E_ADI_LEGACY_ACCELEROMETER _DEPRECATE_ANALOG_IN,
+  E_ADI_LEGACY_BUTTON _DEPRECATE_DIGITAL_IN,
+  E_ADI_LEGACY_POT _DEPRECATE_ANALOG_IN,
+  E_ADI_LEGACY_LINE_SENSOR _DEPRECATE_ANALOG_IN,
+  E_ADI_LEGACY_LIGHT_SENSOR _DEPRECATE_ANALOG_IN,
+  E_ADI_LEGACY_GYRO = 10,
+  E_ADI_LEGACY_ACCELEROMETER _DEPRECATE_ANALOG_IN,
 
 #undef _DEPRECATE_DIGITAL_IN
 #undef _DEPRECATE_ANALOG_IN
 
-	E_ADI_LEGACY_SERVO = 12,
-	E_ADI_LEGACY_PWM = 13,
+  E_ADI_LEGACY_SERVO = 12,
+  E_ADI_LEGACY_PWM = 13,
 
-	E_ADI_LEGACY_ENCODER = 14,
-	E_ADI_LEGACY_ULTRASONIC = 15,
+  E_ADI_LEGACY_ENCODER = 14,
+  E_ADI_LEGACY_ULTRASONIC = 15,
 
-	E_ADI_TYPE_UNDEFINED = 255,
-	E_ADI_ERR = PROS_ERR
+  E_ADI_TYPE_UNDEFINED = 255,
+  E_ADI_ERR = PROS_ERR
 } adi_port_config_e_t;
 
 /**
  * \enum adi_potentiometer_type_e_t
  * Represents the potentiometer version type.
  */
-typedef enum adi_potentiometer_type_e { 
-	E_ADI_POT_EDR = 0,
-	E_ADI_POT_V2
+typedef enum adi_potentiometer_type_e {
+  E_ADI_POT_EDR = 0,
+  E_ADI_POT_V2
 } adi_potentiometer_type_e_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES
@@ -163,11 +166,11 @@ namespace c {
  *        the configuration
  *
  * \return The ADI configuration for the given port
- * 
+ *
  * \b Example
  * \code
  * #define ANALOG_SENSOR_PORT 1
- * 
+ *
  * void initialize() {
  *   adi_port_set_config(ANALOG_SENSOR_PORT, E_ADI_ANALOG_IN);
  *   // Displays the value of E_ADI_ANALOG_IN
@@ -189,11 +192,11 @@ adi_port_config_e_t adi_port_get_config(uint8_t port);
  *        will be returned
  *
  * \return The value stored for the given port
- * 
+ *
  * \b Example
  * \code
  * #define ANALOG_SENSOR_PORT 1
- * 
+ *
  * void opcontrol() {
  *   adi_port_set_config(ANALOG_SENSOR_PORT, E_ADI_ANALOG_IN);
  *   printf("Port Value: %d\n", adi_get_value(ANALOG_SENSOR_PORT));
@@ -216,11 +219,11 @@ int32_t adi_port_get_value(uint8_t port);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * #define ANALOG_SENSOR_PORT 1
- * 
+ *
  * void initialize() {
  *   adi_port_set_config(ANALOG_SENSOR_PORT, E_ADI_ANALOG_IN);
  * }
@@ -246,11 +249,11 @@ int32_t adi_port_set_config(uint8_t port, adi_port_config_e_t type);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * #define DIGITAL_SENSOR_PORT 1
- * 
+ *
  * void initialize() {
  *   adi_port_set_config(DIGITAL_SENSOR_PORT, E_ADI_DIGITAL_OUT);
  *   adi_set_value(DIGITAL_SENSOR_PORT, HIGH);
@@ -272,9 +275,9 @@ int32_t adi_port_set_value(uint8_t port, int32_t value);
  *
  * Do not use this function when the sensor value might be unstable
  * (gyro rotation, accelerometer movement).
- * 
+ *
  * \note The ADI currently returns data at 10ms intervals, in constrast to the
- * calibrate function’s 1ms sample rate. 
+ * calibrate function’s 1ms sample rate.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -284,14 +287,15 @@ int32_t adi_port_set_value(uint8_t port, int32_t value);
  *        The ADI port to calibrate (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return The average sensor value computed by this function
- * 
+ *
  * \b Example
  * \code
  * #define ANALOG_SENSOR_PORT 1
- * 
+ *
  * void initialize() {
  *   adi_analog_calibrate(ANALOG_SENSOR_PORT);
- *   printf("Calibrated Reading: %d\n", adi_analog_read_calibrated(ANALOG_SENSOR_PORT));
+ *   printf("Calibrated Reading: %d\n",
+ * adi_analog_read_calibrated(ANALOG_SENSOR_PORT));
  *   // All readings from then on will be calibrated
  * }
  * \endcode
@@ -315,11 +319,11 @@ int32_t adi_analog_calibrate(uint8_t port);
  *
  * \return The analog sensor value, where a value of 0 reflects an input voltage
  * of nearly 0 V and a value of 4095 reflects an input voltage of nearly 5 V
- * 
+ *
  * \b Example
  * \code
  * #define ANALOG_SENSOR_PORT 1
- * 
+ *
  * void opcontrol() {
  *   while (true) {
  *     printf("Sensor Reading: %d\n", adi_analog_read(ANALOG_SENSOR_PORT));
@@ -349,15 +353,15 @@ int32_t adi_analog_read(uint8_t port);
  *
  * \return The difference of the sensor value from its calibrated default from
  * -4095 to 4095
- * 
+ *
  * \b Example
  * \code
  * #define ANALOG_SENSOR_PORT 1
- * 
+ *
  * void opcontrol() {
  *   while (true) {
- *     printf("Sensor Reading: %d\n", adi_analog_read_calibrated(ANALOG_SENSOR_PORT));
- *     delay(5);
+ *     printf("Sensor Reading: %d\n",
+ * adi_analog_read_calibrated(ANALOG_SENSOR_PORT)); delay(5);
  *   }
  * }
  * \endcode
@@ -388,16 +392,16 @@ int32_t adi_analog_read_calibrated(uint8_t port);
  *
  * \return The difference of the sensor value from its calibrated default from
  * -16384 to 16384
- * 
+ *
  * \b Example
  * \code
  * #define ANALOG_SENSOR_PORT 1
- * 
+ *
  * void opcontrol() {
  *   while (true) {
  *     adi_analog_calibrate(ANALOG_SENSOR_PORT);
- *     printf("Sensor Reading: %d\n", adi_analog_read_calibrated_HR(ANALOG_SENSOR_PORT));
- *     delay(5);
+ *     printf("Sensor Reading: %d\n",
+ * adi_analog_read_calibrated_HR(ANALOG_SENSOR_PORT)); delay(5);
  *   }
  * }
  * \endcode
@@ -421,11 +425,11 @@ int32_t adi_analog_read_calibrated_HR(uint8_t port);
  *        The ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return True if the pin is HIGH, or false if it is LOW
- * 
+ *
  * \b Example
  * \code
  * #define DIGITAL_SENSOR_PORT 1
- * 
+ *
  * void opcontrol() {
  *   while (true) {
  *     printf("Sensor Value: %d\n", adi_digital_read(DIGITAL_SENSOR_PORT));
@@ -457,11 +461,11 @@ int32_t adi_digital_read(uint8_t port);
  *
  * \return 1 if the button is pressed and had not been pressed
  * the last time this function was called, 0 otherwise.
- * 
+ *
  * \b Example
  * \code
  * #define DIGITAL_SENSOR_PORT 1
- * 
+ *
  * void opcontrol() {
  *   while (true) {
  *     if (adi_digital_get_new_press(DIGITAL_SENSOR_PORT)) {
@@ -492,11 +496,11 @@ int32_t adi_digital_get_new_press(uint8_t port);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * #define DIGITAL_SENSOR_PORT
- * 
+ *
  * void opcontrol() {
  *   bool state = LOW;
  *   while (true) {
@@ -523,11 +527,11 @@ int32_t adi_digital_write(uint8_t port, bool value);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * #define ANALOG_SENSOR_PORT 1
- * 
+ *
  * void initialize() {
  *   adi_pin_mode(ANALOG_SENSOR_PORT, INPUT_ANALOG);
  * }
@@ -551,11 +555,11 @@ int32_t adi_pin_mode(uint8_t port, uint8_t mode);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * #define MOTOR_PORT 1
- * 
+ *
  * void opcontrol() {
  *   adi_motor_set(MOTOR_PORT, 127); // Go full speed forward
  *   delay(1000);
@@ -577,16 +581,15 @@ int32_t adi_motor_set(uint8_t port, int8_t speed);
  *        The ADI port to get (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return The last set speed of the motor on the given port
- * 
+ *
  * \b Example
  * \code
  * #define MOTOR_PORT 1
- * 
+ *
  * void opcontrol() {
  *   adi_motor_set(MOTOR_PORT, 127); // Go full speed forward
- *   printf("Commanded Motor Power: %d\n", adi_motor_get(MOTOR_PORT)); // Will display 127
- *   delay(1000);
- *   adi_motor_set(MOTOR_PORT, 0); // Stop the motor
+ *   printf("Commanded Motor Power: %d\n", adi_motor_get(MOTOR_PORT)); // Will
+ * display 127 delay(1000); adi_motor_set(MOTOR_PORT, 0); // Stop the motor
  * }
  * \endcode
  */
@@ -605,11 +608,11 @@ int32_t adi_motor_get(uint8_t port);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * #define MOTOR_PORT 1
- * 
+ *
  * void opcontrol() {
  *   adi_motor_set(MOTOR_PORT, 127); // Go full speed forward
  *   delay(1000);
@@ -642,12 +645,12 @@ typedef int32_t adi_encoder_t;
  *
  * \return The signed and cumulative number of counts since the last start or
  * reset
- * 
+ *
  * \b Example
  * \code
  * #define PORT_TOP 1
  * #define PORT_BOTTOM 2
- * 
+ *
  * void opcontrol() {
  *   adi_encoder_t enc = adi_encoder_init(PORT_TOP, PORT_BOTTOM, false);
  *   while (true) {
@@ -678,12 +681,12 @@ int32_t adi_encoder_get(adi_encoder_t enc);
  *
  * \return An adi_encoder_t object to be stored and used for later calls to
  * encoder functions
- * 
+ *
  * \b Example
  * \code
  * #define PORT_TOP 1
  * #define PORT_BOTTOM 2
- * 
+ *
  * void opcontrol() {
  *   adi_encoder_t enc = adi_encoder_init(PORT_TOP, PORT_BOTTOM, false);
  *   while (true) {
@@ -693,7 +696,8 @@ int32_t adi_encoder_get(adi_encoder_t enc);
  * }
  * \endcode
  */
-adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, bool reverse);
+adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom,
+                               bool reverse);
 
 /**
  * Sets the encoder value to zero.
@@ -712,12 +716,12 @@ adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, bool rever
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * #define PORT_TOP 1
  * #define PORT_BOTTOM 2
- * 
+ *
  * void opcontrol() {
  *   adi_encoder_t enc = adi_encoder_init(PORT_TOP, PORT_BOTTOM, false);
  *   delay(1000); // Move the encoder around in this time
@@ -740,12 +744,12 @@ int32_t adi_encoder_reset(adi_encoder_t enc);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * #define PORT_TOP 1
  * #define PORT_BOTTOM 2
- * 
+ *
  * void opcontrol() {
  *   adi_encoder_t enc = adi_encoder_init(PORT_TOP, PORT_BOTTOM, false);
  *   // Use the encoder
@@ -779,12 +783,12 @@ typedef int32_t adi_ultrasonic_t;
  *
  * \return The distance to the nearest object in m^-4 (10000 indicates 1 meter),
  * measured from the sensor's mounting points.
- * 
+ *
  * \b Example
  * \code
  * #define PORT_PING 1
  * #define PORT_ECHO 2
- * 
+ *
  * void opcontrol() {
  *   adi_ultrasonic_t ult = adi_ultrasonic_init(PORT_PING, PORT_ECHO);
  *   while (true) {
@@ -814,12 +818,12 @@ int32_t adi_ultrasonic_get(adi_ultrasonic_t ult);
  *
  * \return An adi_ultrasonic_t object to be stored and used for later calls to
  * ultrasonic functions
- * 
+ *
  * \b Example
  * \code
  * #define PORT_PING 1
  * #define PORT_ECHO 2
- * 
+ *
  * void opcontrol() {
  *   adi_ultrasonic_t ult = adi_ultrasonic_init(PORT_PING, PORT_ECHO);
  *     while (true) {
@@ -845,12 +849,12 @@ adi_ultrasonic_t adi_ultrasonic_init(uint8_t port_ping, uint8_t port_echo);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * #define PORT_PING 1
  * #define PORT_ECHO 2
- * 
+ *
  * void opcontrol() {
  *   adi_ultrasonic_t ult = adi_ultrasonic_init(PORT_PING, PORT_ECHO);
  *   while (true) {
@@ -888,12 +892,12 @@ typedef int32_t adi_gyro_t;
  *        The adi_gyro_t object for which the angle will be returned
  *
  * \return The gyro angle in degrees.
- * 
+ *
  * \b Example
  * \code
  * #define GYRO_PORT 1
  * #define GYRO_MULTIPLIER 1 // Standard behavior
- * 
+ *
  * void opcontrol() {
  *   adi_gyro_t gyro = adi_gyro_init(GYRO_PORT, GYRO_MULTIPLIER);
  *   while (true) {
@@ -927,12 +931,12 @@ double adi_gyro_get(adi_gyro_t gyro);
  *
  * \return An adi_gyro_t object containing the given port, or PROS_ERR if the
  * initialization failed.
- * 
+ *
  * \b Example
  * \code
  * #define GYRO_PORT 1
  * #define GYRO_MULTIPLIER 1 // Standard behavior
- * 
+ *
  * void opcontrol() {
  *   adi_gyro_t gyro = adi_gyro_init(GYRO_PORT, GYRO_MULTIPLIER);
  *   while (true) {
@@ -958,25 +962,25 @@ adi_gyro_t adi_gyro_init(uint8_t port, double multiplier);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * #define GYRO_PORT 1
  * #define GYRO_MULTIPLIER 1 // Standard behavior
- * 
+ *
  * void opcontrol() {
  *   adi_gyro_t gyro = adi_gyro_init(GYRO_PORT, GYRO_MULTIPLIER);
  *   uint32_t now = millis();
  *   while (true) {
  *     // Print the gyro's heading
  *     printf("Heading: %lf\n", adi_gyro_get(gyro));
- * 
+ *
  *     if (millis() - now > 2000) {
  *       // Reset the gyro every 2 seconds
  *       adi_gyro_reset(gyro);
  *       now = millis();
  *     }
- * 
+ *
  *   delay(5);
  *   }
  * }
@@ -997,25 +1001,25 @@ int32_t adi_gyro_reset(adi_gyro_t gyro);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * #define GYRO_PORT 1
  * #define GYRO_MULTIPLIER 1 // Standard behavior
- * 
+ *
  * void opcontrol() {
  *   adi_gyro_t gyro = adi_gyro_init(GYRO_PORT, GYRO_MULTIPLIER);
  *   uint32_t now = millis();
  *   while (true) {
  *     // Print the gyro's heading
  *     printf("Heading: %lf\n", adi_gyro_get(gyro));
- * 
+ *
  *     if (millis() - now > 2000) {
  *       adi_gyro_shutdown(gyro);
  *       // Shut down the gyro after two seconds
  *       break;
  *     }
- * 
+ *
  *     delay(5);
  *   }
  * }
@@ -1041,16 +1045,16 @@ typedef int32_t adi_potentiometer_t;
  * \param port
  *        The ADI port to initialize as a gyro (from 1-8, 'a'-'h', 'A'-'H')
  *
- * \return An adi_potentiometer_t object containing the given port, or PROS_ERR if the
- * initialization failed.
- * 
+ * \return An adi_potentiometer_t object containing the given port, or PROS_ERR
+ * if the initialization failed.
+ *
  * \b Example
  * \code
  * #define POTENTIOMETER_PORT 1
- * 
+ *
  * void opcontrol() {
- *   adi_potentiometer_t potentiometer = adi_potentiometer_init(POTENTIOMETER_PORT);
- *   while (true) {
+ *   adi_potentiometer_t potentiometer =
+ * adi_potentiometer_init(POTENTIOMETER_PORT); while (true) {
  *     // Print the potentiometer's angle
  *     printf("Angle: %lf\n", adi_potentiometer_get_angle(potentiometer));
  *     delay(5);
@@ -1061,7 +1065,7 @@ typedef int32_t adi_potentiometer_t;
 adi_potentiometer_t adi_potentiometer_init(uint8_t port);
 
 /**
- * Initializes a potentiometer on the given port. 
+ * Initializes a potentiometer on the given port.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -1071,19 +1075,21 @@ adi_potentiometer_t adi_potentiometer_init(uint8_t port);
  * \param port
  *        The ADI port to initialize as a gyro (from 1-8, 'a'-'h', 'A'-'H')
  * \param potentiometer_type
- *        An adi_potentiometer_type_e_t enum value specifying the potentiometer version type
+ *        An adi_potentiometer_type_e_t enum value specifying the potentiometer
+ * version type
  *
- * \return An adi_potentiometer_t object containing the given port, or PROS_ERR if the
- * initialization failed.
- * 
+ * \return An adi_potentiometer_t object containing the given port, or PROS_ERR
+ * if the initialization failed.
+ *
  * \b Example
  * \code
  * #define POTENTIOMETER_PORT 1
  * #define POTENTIOMETER_TYPE E_ADI_POT_EDR
- * 
+ *
  * void opcontrol() {
- *   adi_potentiometer_t potentiometer = adi_potentiometer_type_init(POTENTIOMETER_PORT, POTENTIOMETER_TYPE);
- *   while (true) {
+ *   adi_potentiometer_t potentiometer =
+ * adi_potentiometer_type_init(POTENTIOMETER_PORT, POTENTIOMETER_TYPE); while
+ * (true) {
  *     // Print the potentiometer's angle
  *     printf("Angle: %lf\n", adi_potentiometer_get_angle(potentiometer));
  *     delay(5);
@@ -1091,13 +1097,16 @@ adi_potentiometer_t adi_potentiometer_init(uint8_t port);
  * }
  * \endcode
  */
-adi_potentiometer_t adi_potentiometer_type_init(uint8_t port, adi_potentiometer_type_e_t potentiometer_type);
+adi_potentiometer_t
+adi_potentiometer_type_init(uint8_t port,
+                            adi_potentiometer_type_e_t potentiometer_type);
 
 /**
  * Gets the current potentiometer angle in tenths of a degree.
  *
- * The original potentiometer rotates 250 degrees thus returning an angle between 0-250 degrees.
- * Potentiometer V2 rotates 330 degrees thus returning an angle between 0-330 degrees.
+ * The original potentiometer rotates 250 degrees thus returning an angle
+ * between 0-250 degrees. Potentiometer V2 rotates 330 degrees thus returning an
+ * angle between 0-330 degrees.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -1108,14 +1117,14 @@ adi_potentiometer_t adi_potentiometer_type_init(uint8_t port, adi_potentiometer_
  *        The adi_potentiometer_t object for which the angle will be returned
  *
  * \return The potentiometer angle in degrees.
- * 
+ *
  * \b Example
  * \code
  * #define POTENTIOMETER_PORT 1
- * 
+ *
  * void opcontrol() {
- *   adi_potentiometer_t potentiometer = adi_potentiometer_t(POTENTIOMETER_PORT);
- *   while (true) {
+ *   adi_potentiometer_t potentiometer =
+ * adi_potentiometer_t(POTENTIOMETER_PORT); while (true) {
  *     // Print the potnetiometer's angle
  *     printf("Angle: %lf\n", adi_potentiometer_get_angle(potentiometer));
  *     delay(5);
@@ -1147,15 +1156,15 @@ typedef int32_t adi_led_t;
  *
  * \return An adi_led_t object containing the given port, or PROS_ERR if the
  * initialization failed, setting errno
- * 
+ *
  * \b Example
  * \code
  * #define LED_PORT 1
- * 	
+ *
  * void opcontrol() {
  *   adi_led_t led = adi_led_init(LED_PORT);
- *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000};
- *   while (true) {
+ *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF,
+ * 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000}; while (true) {
  *     // Set the led to the colors in the buffer
  *     adi_led_set(led, buffer, 10);
  *     delay(5);
@@ -1175,22 +1184,23 @@ adi_led_t adi_led_init(uint8_t port);
  * EADDRINUSE - The port is not configured for ADI output
  *
  * @param led port of type adi_led_t
- * @param buffer array of colors in format 0xRRGGBB, recommended that individual RGB value not to exceed 0x80 due to current draw
+ * @param buffer array of colors in format 0xRRGGBB, recommended that individual
+ * RGB value not to exceed 0x80 due to current draw
  * @param buffer_length length of buffer to clear
  * @return PROS_SUCCESS if successful, PROS_ERR if not
- * 
+ *
  * \b Example
  * \code
  * #define LED_PORT 1
- * 	
+ *
  * void opcontrol() {
  *   adi_led_t led = adi_led_init(LED_PORT);
- * 	 uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000};
- *   while (true) {
+ * 	 uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00,
+ * 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000}; while (true) {
  * 	   // Set the led to the colors in the buffer
  *     adi_led_set(led, buffer, 10);
  *     delay(5);
- * 
+ *
  *     // Clear the led strip
  *     adi_led_clear(led);
  *     delay(5);
@@ -1198,7 +1208,8 @@ adi_led_t adi_led_init(uint8_t port);
  * }
  * \endcode
  */
-int32_t adi_led_clear_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_length);
+int32_t adi_led_clear_all(adi_led_t led, uint32_t *buffer,
+                          uint32_t buffer_length);
 
 /**
  * @brief Set the entire led strip using the colors contained in the buffer
@@ -1210,18 +1221,19 @@ int32_t adi_led_clear_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_lengt
  * EADDRINUSE - The port is not configured for ADI output
  *
  * @param led port of type adi_led_t
- * @param buffer array of colors in format 0xRRGGBB, recommended that individual RGB value not to exceed 0x80 due to current draw
+ * @param buffer array of colors in format 0xRRGGBB, recommended that individual
+ * RGB value not to exceed 0x80 due to current draw
  * @param buffer_length length of buffer to clear
  * @return PROS_SUCCESS if successful, PROS_ERR if not
- * 
+ *
  * \b Example
  * \code
  * #define LED_PORT 1
- * 	
+ *
  * void opcontrol() {
  *   adi_led_t led = adi_led_init(LED_PORT);
- *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000};
- *   while (true) {
+ *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF,
+ * 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000}; while (true) {
  *     // Set the led strip to the colors in the buffer
  *     adi_led_set(led, buffer, 10);
  *     delay(5);
@@ -1229,7 +1241,7 @@ int32_t adi_led_clear_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_lengt
  * }
  * \endcode
  */
-int32_t adi_led_set(adi_led_t led, uint32_t* buffer, uint32_t buffer_length);
+int32_t adi_led_set(adi_led_t led, uint32_t *buffer, uint32_t buffer_length);
 
 /**
  * @brief Set the entire led strip to one color
@@ -1241,19 +1253,20 @@ int32_t adi_led_set(adi_led_t led, uint32_t* buffer, uint32_t buffer_length);
  * EADDRINUSE - The port is not configured for ADI output
  *
  * @param led port of type adi_led_t
- * @param buffer array of colors in format 0xRRGGBB, recommended that individual RGB value not to exceed 0x80 due to current draw
+ * @param buffer array of colors in format 0xRRGGBB, recommended that individual
+ * RGB value not to exceed 0x80 due to current draw
  * @param buffer_length length of buffer to clear
  * @param color color to set all the led strip value to
  * @return PROS_SUCCESS if successful, PROS_ERR if not
- * 
+ *
  * \b Example
  * \code
  * #define LED_PORT 1
- * 	
+ *
  * void opcontrol() {
  *   adi_led_t led = adi_led_init(LED_PORT);
- *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000};
- *   while (true) {
+ *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF,
+ * 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000}; while (true) {
  *     // Set the led strip to red
  *     adi_led_set_all(led, buffer, 10, 0xFF0000);
  *     delay(5);
@@ -1261,7 +1274,8 @@ int32_t adi_led_set(adi_led_t led, uint32_t* buffer, uint32_t buffer_length);
  * }
  * \endcode
  */
-int32_t adi_led_set_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color);
+int32_t adi_led_set_all(adi_led_t led, uint32_t *buffer, uint32_t buffer_length,
+                        uint32_t color);
 
 /**
  * @brief Set one pixel on the led strip
@@ -1273,20 +1287,21 @@ int32_t adi_led_set_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_length,
  * EADDRINUSE - The port is not configured for ADI output
  *
  * @param led port of type adi_led_t
- * @param buffer array of colors in format 0xRRGGBB, recommended that individual RGB value not to exceed 0x80 due to current draw
+ * @param buffer array of colors in format 0xRRGGBB, recommended that individual
+ * RGB value not to exceed 0x80 due to current draw
  * @param buffer_length length of the input buffer
  * @param color color to clear all the led strip to
  * @param pixel_position position of the pixel to clear
  * @return PROS_SUCCESS if successful, PROS_ERR if not
- * 	
+ *
  * \b Example
  * \code
  * #define LED_PORT 1
- * 
+ *
  * void opcontrol() {
  *   adi_led_t led = adi_led_init(LED_PORT);
- *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000};
- *   while (true) {
+ *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF,
+ * 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000}; while (true) {
  *     // Set the first pixel to red
  *     adi_led_set_pixel(led, buffer, 10, 0xFF0000, 0);
  *     delay(5);
@@ -1294,7 +1309,9 @@ int32_t adi_led_set_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_length,
  * }
  * \endcode
  */
-int32_t adi_led_set_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color, uint32_t pixel_position);
+int32_t adi_led_set_pixel(adi_led_t led, uint32_t *buffer,
+                          uint32_t buffer_length, uint32_t color,
+                          uint32_t pixel_position);
 
 /**
  * @brief Clear one pixel on the led strip
@@ -1306,23 +1323,24 @@ int32_t adi_led_set_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_lengt
  * EADDRINUSE - The port is not configured for ADI output
  *
  * @param led port of type adi_led_t
- * @param buffer array of colors in format 0xRRGGBB, recommended that individual RGB value not to exceed 0x80 due to current draw
+ * @param buffer array of colors in format 0xRRGGBB, recommended that individual
+ * RGB value not to exceed 0x80 due to current draw
  * @param buffer_length length of the input buffer
  * @param pixel_position position of the pixel to clear
  * @return PROS_SUCCESS if successful, PROS_ERR if not
- * 
+ *
  * \b Example
  * \code
  * #define LED_PORT 1
- * 	
+ *
  * void opcontrol() {
  *   adi_led_t led = adi_led_init(LED_PORT);
- *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000};
- *   while (true) {
+ *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF,
+ * 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000}; while (true) {
  *     // Set the first pixel to red
  *     adi_led_set_pixel(led, buffer, 10, 0xFF0000, 0);
  *     delay(5);
- * 
+ *
  *     // Clear the first pixel
  *     adi_led_clear_pixel(led, buffer, 10, 0);
  *     delay(5);
@@ -1330,11 +1348,12 @@ int32_t adi_led_set_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_lengt
  * }
  * \endcode
  */
-int32_t adi_led_clear_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t pixel_position);
+int32_t adi_led_clear_pixel(adi_led_t led, uint32_t *buffer,
+                            uint32_t buffer_length, uint32_t pixel_position);
 
 /**
  * \name Ease of use macro definitions
- * These functions provide ease of use definitions for the ADI functions. 
+ * These functions provide ease of use definitions for the ADI functions.
  * @{
  */
 
@@ -1375,9 +1394,9 @@ int32_t adi_led_clear_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_len
 /** @} Add to group: c-adi*/
 
 #ifdef __cplusplus
-}  // namespace c
-}  // namespace pros
+} // namespace c
+} // namespace pros
 }
 #endif
 
-#endif  // _PROS_ADI_H_
+#endif // _PROS_ADI_H_

@@ -16,7 +16,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * \defgroup c-misc Miscellaneous C API
- * \note Additional example code for this module can be found in its [Tutorial.](@ref controller)
+ * \note Additional example code for this module can be found in its
+ * [Tutorial.](@ref controller)
  */
 
 #ifndef _PROS_MISC_H_
@@ -43,10 +44,10 @@
 #define COMPETITION_CONNECTED (1 << 2)
 #define COMPETITION_SYSTEM (1 << 3)*/
 typedef enum {
-	COMPETITION_DISABLED = 1 << 0,
-	COMPETITION_CONNECTED = 1 << 2,
-	COMPETITION_AUTONOMOUS = 1 << 1,
-	COMPETITION_SYSTEM = 1 << 3,
+  COMPETITION_DISABLED = 1 << 0,
+  COMPETITION_CONNECTED = 1 << 2,
+  COMPETITION_AUTONOMOUS = 1 << 1,
+  COMPETITION_SYSTEM = 1 << 3,
 } competition_status;
 
 #ifdef __cplusplus
@@ -88,14 +89,16 @@ uint8_t competition_get_status(void);
  * }
  *
  * void initialize() {
- *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIO_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "My Task");
+ *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIO_DEFAULT,
+ * TASK_STACK_DEPTH_DEFAULT, "My Task");
  * }
  * \endcode
  */
 uint8_t competition_is_disabled(void);
 
 /**
- * \return True if the V5 Brain is connected to competition control, false otherwise.
+ * \return True if the V5 Brain is connected to competition control, false
+ * otherwise.
  *
  * \b Example
  * \code
@@ -125,14 +128,16 @@ uint8_t competition_is_connected(void);
  * }
  *
  * void initialize() {
- *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIO_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "My Task");
+ *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIO_DEFAULT,
+ * TASK_STACK_DEPTH_DEFAULT, "My Task");
  * }
  * \endcode
  */
 uint8_t competition_is_autonomous(void);
 
 /**
- * \return True if the V5 Brain is connected to VEXnet Field Controller, false otherwise.
+ * \return True if the V5 Brain is connected to VEXnet Field Controller, false
+ * otherwise.
  *
  * \b Example
  * \code
@@ -146,7 +151,8 @@ uint8_t competition_is_autonomous(void);
 uint8_t competition_is_field(void);
 
 /**
- * \return True if the V5 Brain is connected to VEXnet Competition Switch, false otherwise.
+ * \return True if the V5 Brain is connected to VEXnet Competition Switch, false
+ * otherwise.
  *
  * \b Example
  * \code
@@ -176,54 +182,54 @@ namespace pros {
  * \enum
  */
 typedef enum {
-	/// The master controller.
-	E_CONTROLLER_MASTER = 0,
-	/// The partner controller.
-	E_CONTROLLER_PARTNER
+  /// The master controller.
+  E_CONTROLLER_MASTER = 0,
+  /// The partner controller.
+  E_CONTROLLER_PARTNER
 } controller_id_e_t;
 
 /**
  * \enum
  */
 typedef enum {
-	/// The horizontal axis of the controller’s left analog stick.
-	E_CONTROLLER_ANALOG_LEFT_X = 0,
-	/// The vertical axis of the controller’s left analog stick.
-	E_CONTROLLER_ANALOG_LEFT_Y,
-	/// The horizontal axis of the controller’s right analog stick.
-	E_CONTROLLER_ANALOG_RIGHT_X,
-	/// The vertical axis of the controller’s right analog stick.
-	E_CONTROLLER_ANALOG_RIGHT_Y
+  /// The horizontal axis of the controller’s left analog stick.
+  E_CONTROLLER_ANALOG_LEFT_X = 0,
+  /// The vertical axis of the controller’s left analog stick.
+  E_CONTROLLER_ANALOG_LEFT_Y,
+  /// The horizontal axis of the controller’s right analog stick.
+  E_CONTROLLER_ANALOG_RIGHT_X,
+  /// The vertical axis of the controller’s right analog stick.
+  E_CONTROLLER_ANALOG_RIGHT_Y
 } controller_analog_e_t;
 
 /**
  * \enum
  */
 typedef enum {
-	/// The first trigger on the left side of the controller.
-	E_CONTROLLER_DIGITAL_L1 = 6,
-	/// The second trigger on the left side of the controller.
-	E_CONTROLLER_DIGITAL_L2,
-	/// The first trigger on the right side of the controller.
-	E_CONTROLLER_DIGITAL_R1,
-	/// The second trigger on the right side of the controller.
-	E_CONTROLLER_DIGITAL_R2,
-	/// The up arrow on the left arrow pad of the controller.
-	E_CONTROLLER_DIGITAL_UP,
-	/// The down arrow on the left arrow pad of the controller.
-	E_CONTROLLER_DIGITAL_DOWN,
-	/// The left arrow on the left arrow pad of the controller.
-	E_CONTROLLER_DIGITAL_LEFT,
-	/// The right arrow on the left arrow pad of the controller.
-	E_CONTROLLER_DIGITAL_RIGHT,
-	/// The ‘X’ button on the right button pad of the controller.
-	E_CONTROLLER_DIGITAL_X,
-	/// The ‘B’ button on the right button pad of the controller.
-	E_CONTROLLER_DIGITAL_B,
-	/// The ‘Y’ button on the right button pad of the controller.
-	E_CONTROLLER_DIGITAL_Y,
-	/// The ‘A’ button on the right button pad of the controller.
-	E_CONTROLLER_DIGITAL_A
+  /// The first trigger on the left side of the controller.
+  E_CONTROLLER_DIGITAL_L1 = 6,
+  /// The second trigger on the left side of the controller.
+  E_CONTROLLER_DIGITAL_L2,
+  /// The first trigger on the right side of the controller.
+  E_CONTROLLER_DIGITAL_R1,
+  /// The second trigger on the right side of the controller.
+  E_CONTROLLER_DIGITAL_R2,
+  /// The up arrow on the left arrow pad of the controller.
+  E_CONTROLLER_DIGITAL_UP,
+  /// The down arrow on the left arrow pad of the controller.
+  E_CONTROLLER_DIGITAL_DOWN,
+  /// The left arrow on the left arrow pad of the controller.
+  E_CONTROLLER_DIGITAL_LEFT,
+  /// The right arrow on the left arrow pad of the controller.
+  E_CONTROLLER_DIGITAL_RIGHT,
+  /// The ‘X’ button on the right button pad of the controller.
+  E_CONTROLLER_DIGITAL_X,
+  /// The ‘B’ button on the right button pad of the controller.
+  E_CONTROLLER_DIGITAL_B,
+  /// The ‘Y’ button on the right button pad of the controller.
+  E_CONTROLLER_DIGITAL_Y,
+  /// The ‘A’ button on the right button pad of the controller.
+  E_CONTROLLER_DIGITAL_A
 } controller_digital_e_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES
@@ -269,27 +275,28 @@ typedef enum {
 #endif
 
 /**
- * \def Given an id and a port, this macro sets the port variable based on the id and allows the mutex to take that
- * port.
+ * \def Given an id and a port, this macro sets the port variable based on the
+ * id and allows the mutex to take that port.
  *
- * \returns error (in the function/scope it's in) if the controller failed to connect or an invalid id is given.
+ * \returns error (in the function/scope it's in) if the controller failed to
+ * connect or an invalid id is given.
  */
-#define CONTROLLER_PORT_MUTEX_TAKE(id, port) \
-	switch (id) {                              \
-		case E_CONTROLLER_MASTER:                \
-			port = V5_PORT_CONTROLLER_1;           \
-			break;                                 \
-		case E_CONTROLLER_PARTNER:               \
-			port = V5_PORT_CONTROLLER_2;           \
-			break;                                 \
-		default:                                 \
-			errno = EINVAL;                        \
-			return PROS_ERR;                       \
-	}                                          \
-	if (!internal_port_mutex_take(port)) {     \
-		errno = EACCES;                          \
-		return PROS_ERR;                         \
-	}
+#define CONTROLLER_PORT_MUTEX_TAKE(id, port)                                   \
+  switch (id) {                                                                \
+  case E_CONTROLLER_MASTER:                                                    \
+    port = V5_PORT_CONTROLLER_1;                                               \
+    break;                                                                     \
+  case E_CONTROLLER_PARTNER:                                                   \
+    port = V5_PORT_CONTROLLER_2;                                               \
+    break;                                                                     \
+  default:                                                                     \
+    errno = EINVAL;                                                            \
+    return PROS_ERR;                                                           \
+  }                                                                            \
+  if (!internal_port_mutex_take(port)) {                                       \
+    errno = EACCES;                                                            \
+    return PROS_ERR;                                                           \
+  }
 
 #ifdef __cplusplus
 namespace c {
@@ -346,13 +353,14 @@ int32_t controller_is_connected(controller_id_e_t id);
  * \code
  * void opcontrol() {
  *   while (true) {
- *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
- *     delay(2);
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER,
+ * E_CONTROLLER_ANALOG_LEFT_Y)); delay(2);
  *   }
  * }
  * \endcode
  */
-int32_t controller_get_analog(controller_id_e_t id, controller_analog_e_t channel);
+int32_t controller_get_analog(controller_id_e_t id,
+                              controller_analog_e_t channel);
 
 /**
  * Gets the battery capacity of the given controller.
@@ -372,7 +380,8 @@ int32_t controller_get_analog(controller_id_e_t id, controller_analog_e_t channe
  * \b Example
  * \code
  * void initialize() {
- *   printf("Battery Capacity: %d\n", controller_get_battery_capacity(E_CONTROLLER_MASTER));
+ *   printf("Battery Capacity: %d\n",
+ * controller_get_battery_capacity(E_CONTROLLER_MASTER));
  * }
  * \endcode
  */
@@ -396,7 +405,8 @@ int32_t controller_get_battery_capacity(controller_id_e_t id);
  * \b Example
  * \code
  * void initialize() {
- *   printf("Battery Level: %d\n", controller_get_battery_level(E_CONTROLLER_MASTER));
+ *   printf("Battery Level: %d\n",
+ * controller_get_battery_level(E_CONTROLLER_MASTER));
  * }
  * \endcode
  */
@@ -437,7 +447,8 @@ int32_t controller_get_battery_level(controller_id_e_t id);
 
  * \endcode
  */
-int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t button);
+int32_t controller_get_digital(controller_id_e_t id,
+                               controller_digital_e_t button);
 
 /**
  * Returns a rising-edge case for a controller button press.
@@ -470,7 +481,8 @@ int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t butt
  * \code
  * void opcontrol() {
  * while (true) {
- *   if (controller_get_digital_new_press(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_A)) {
+ *   if (controller_get_digital_new_press(E_CONTROLLER_MASTER,
+ * E_CONTROLLER_DIGITAL_A)) {
  *     // Toggle pneumatics or other similar actions
  *   }
  *
@@ -479,13 +491,15 @@ int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t butt
  * }
  * \endcode
  */
-int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digital_e_t button);
+int32_t controller_get_digital_new_press(controller_id_e_t id,
+                                         controller_digital_e_t button);
 
 /**
  * Sets text to the controller LCD screen.
  *
  * \note Controller text setting is a slow process, so updates faster than 10ms
- * when on a wired connection or 50ms over Vexnet will not be applied to the controller.
+ * when on a wired connection or 50ms over Vexnet will not be applied to the
+ * controller.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -524,13 +538,15 @@ int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digita
  * }
  * \endcode
  */
-int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const char* fmt, ...);
+int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col,
+                         const char *fmt, ...);
 
 /**
  * Sets text to the controller LCD screen.
  *
  * \note Controller text setting is a slow process, so updates faster than 10ms
- * when on a wired connection or 50ms over Vexnet will not be applied to the controller.
+ * when on a wired connection or 50ms over Vexnet will not be applied to the
+ * controller.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -567,7 +583,8 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
  * }
  * \endcode
  */
-int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, const char* str);
+int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col,
+                            const char *str);
 
 /**
  * Clears an individual line of the controller screen.
@@ -605,7 +622,8 @@ int32_t controller_clear_line(controller_id_e_t id, uint8_t line);
  * Clears all of the lines on the controller screen.
  *
  * \note Controller text setting is a slow process, so updates faster than 10ms
- * when on a wired connection or 50ms over Vexnet will not be applied to the controller.
+ * when on a wired connection or 50ms over Vexnet will not be applied to the
+ * controller.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -635,8 +653,9 @@ int32_t controller_clear(controller_id_e_t id);
 /**
  * Rumble the controller.
  *
- * \note Controller rumble activation is a slow process, so updates faster than 10ms
- * when on a wired connection or 50ms over Vexnet will not be applied to the controller.
+ * \note Controller rumble activation is a slow process, so updates faster than
+ *10ms when on a wired connection or 50ms over Vexnet will not be applied to the
+ *controller.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -645,12 +664,12 @@ int32_t controller_clear(controller_id_e_t id);
  * EACCES - Another resource is currently trying to access the controller port.
  *
  * \param id
- *				The ID of the controller (e.g. the master or partner controller).
- *				Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
+ *				The ID of the controller (e.g. the master or
+ *partner controller). Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
  * \param rumble_pattern
- *				A string consisting of the characters '.', '-', and ' ', where dots
- *				are short rumbles, dashes are long rumbles, and spaces are pauses.
- *				Maximum supported length is 8 characters.
+ *				A string consisting of the characters '.', '-',
+ *and ' ', where dots are short rumbles, dashes are long rumbles, and spaces are
+ *pauses. Maximum supported length is 8 characters.
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
@@ -670,7 +689,7 @@ int32_t controller_clear(controller_id_e_t id);
  * }
  * \endcode
  */
-int32_t controller_rumble(controller_id_e_t id, const char* rumble_pattern);
+int32_t controller_rumble(controller_id_e_t id, const char *rumble_pattern);
 
 /**
  * Gets the current voltage of the battery, as reported by VEXos.
@@ -760,7 +779,8 @@ int32_t usd_is_installed(void);
 
 /**
  * Lists the files in a directory specified by the path
- * Puts the list of file names (NOT DIRECTORIES) into the buffer seperated by newlines
+ * Puts the list of file names (NOT DIRECTORIES) into the buffer seperated by
+ *newlines
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -790,35 +810,33 @@ int32_t usd_is_installed(void);
  * 	char* test = (char*) malloc(128);
  *	pros::c::usd_list_files("/", test, 128);
  *	pros::delay(200);
- *	printf("%s\n", test); //Prints the file names in the root directory seperated by newlines
- *  pros::delay(100);
- *  pros::c::usd_list_files("/test", test, 128);
- *	pros::delay(200);
- *	printf("%s\n", test); //Prints the names of files in the folder named test seperated by newlines
- *  pros::delay(100);
+ *	printf("%s\n", test); //Prints the file names in the root directory
+ *seperated by newlines pros::delay(100); pros::c::usd_list_files("/test", test,
+ *128); pros::delay(200); printf("%s\n", test); //Prints the names of files in
+ *the folder named test seperated by newlines pros::delay(100);
  * }
  * \endcode
  */
-int32_t usd_list_files(const char* path, char* buffer, int32_t len);
+int32_t usd_list_files(const char *path, char *buffer, int32_t len);
 
 /******************************************************************************/
 /**                              Date and Time                               **/
 /******************************************************************************/
 
-extern const char* baked_date;
-extern const char* baked_time;
+extern const char *baked_date;
+extern const char *baked_time;
 
 typedef struct {
-	uint16_t year;  // Year - 1980
-	uint8_t day;
-	uint8_t month;  // 1 = January
+  uint16_t year; // Year - 1980
+  uint8_t day;
+  uint8_t month; // 1 = January
 } date_s_t;
 
 typedef struct {
-	uint8_t hour;
-	uint8_t min;
-	uint8_t sec;
-	uint8_t sec_hund;  // hundredths of a second
+  uint8_t hour;
+  uint8_t min;
+  uint8_t sec;
+  uint8_t sec_hund; // hundredths of a second
 } time_s_t;
 
 ///@}
@@ -827,8 +845,8 @@ typedef struct {
 
 #ifdef __cplusplus
 }
-}  // namespace pros
+} // namespace pros
 }
 #endif
 
-#endif  // _PROS_MISC_H_
+#endif // _PROS_MISC_H_

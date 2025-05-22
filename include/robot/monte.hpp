@@ -95,4 +95,3 @@ void stopMCL();
 void testParticleInitialization();
 
 lemlib::Pose calculateMotionDelta(const lemlib::Pose &currentPose);
-

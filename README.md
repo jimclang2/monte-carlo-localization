@@ -79,6 +79,18 @@ This function demonstrates the essential steps of MCL:
 
 This cycle enables robust and accurate localization on the VEX V5 platform, even in the presence of sensor noise and uncertainty.
 
+## Why Monte Carlo Localization?
+
+Traditional VEX V5 robots often rely on odometry and IMU sensors to estimate their position. While this works for tracking local movement, it is prone to accumulating errors and can be thrown off by field inconsistencies, wheel slip, or sensor drift. These issues often lead to unreliable autonomous routines and inconsistent performance in competition.
+
+**Monte Carlo Localization (MCL)** solves this by continuously estimating the robot's global position on the field, not just its local movement. By fusing data from multiple sensors and using a probabilistic approach, MCL can correct for errors and adapt to real-world uncertainties. This results in:
+
+- Robust, accurate global position tracking
+- Greater resilience to field inconsistencies and sensor noise
+- More reliable and repeatable autonomous routines
+
+By using MCL, this project addresses the root causes of many autonomous failures and sets a new standard for motion control in VEX V5 robotics.
+
 ## Key Files and Directories
 
 -   `src/main.cpp`: Main entry point of the program, contains driver control logic and GUI interaction.

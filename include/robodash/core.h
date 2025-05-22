@@ -16,8 +16,8 @@ extern "C" {
  * @defgroup core Core
  * @brief The view management system.
  *
- * The LVGL view management system to enable compatibility between templates that provide LVGL GUIs.
- * Knowledge of LVGL is required to use this API.
+ * The LVGL view management system to enable compatibility between templates
+ * that provide LVGL GUIs. Knowledge of LVGL is required to use this API.
  */
 
 /// @addtogroup core
@@ -32,10 +32,10 @@ typedef enum rd_anim_state { RD_ANIM_ON, RD_ANIM_OFF } rd_anim_state_t;
  * @brief Robodash view structure
  */
 typedef struct rd_view {
-	const char *name;
-	lv_obj_t *obj;
-	lv_obj_t *_list_btn;
-	rd_anim_state_t anims;
+  const char *name;
+  lv_obj_t *obj;
+  lv_obj_t *_list_btn;
+  rd_anim_state_t anims;
 } rd_view_t;
 
 /**
@@ -55,8 +55,8 @@ void rd_view_focus(rd_view_t *view);
 
 /**
  * @brief Delete a view
- * @warning Deleting a view will free the memory the view occupied, but will not set any variables
- * pointing to said view `NULL`.
+ * @warning Deleting a view will free the memory the view occupied, but will not
+ * set any variables pointing to said view `NULL`.
  *
  * @param view View to delete
  */

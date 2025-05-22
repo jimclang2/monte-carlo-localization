@@ -3,10 +3,11 @@
 
 #include "api.h"
 #include "lemlib/api.hpp"
-#include "pros/motors.hpp"
 #include "pros/adi.hpp"
+#include "pros/motors.hpp"
 
-// extern tells the compiler that these variables are defined elsewhere (in globals.cpp)
+// extern tells the compiler that these variables are defined elsewhere (in
+// globals.cpp)
 extern pros::MotorGroup dt_left;
 extern pros::MotorGroup dt_right;
 extern pros::Motor lady_brown;
@@ -29,7 +30,5 @@ extern pros::Distance dNorth;
 extern pros::Distance dEast;
 extern pros::Distance dNorthW;
 extern pros::Distance dWest;
-
-
 
 #endif // GLOBALS_H
