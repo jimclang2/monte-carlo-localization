@@ -7,32 +7,43 @@
 
 This project implements an advanced motion control system for the VEX V5 platform, with a core focus on **Monte Carlo Localization (MCL)**, designed for the VEX High Stakes competition season. It utilizes PROS and LemLib.
 
-## Core Feature: Monte Carlo Localization
+## 🚀 Core Feature: Monte Carlo Localization
 
-This system's standout feature is its implementation of Monte Carlo Localization. MCL allows the robot to:
+At the heart of this system is a full-featured Monte Carlo Localization (MCL) engine, implemented in [`src/monte.cpp`](src/monte.cpp). MCL enables the robot to:
 
--   Estimate its position and orientation on the field with high accuracy, even with noisy sensor data.
--   Continuously update its pose by incorporating sensor readings (IMU, tracking wheels) and motion commands.
--   Improve autonomous routine reliability and enable more complex path planning.
+- Precisely estimate its global position and orientation on the field, even with noisy or imperfect sensor data
+- Fuse data from IMU, tracking wheels, and multiple distance sensors for maximum reliability
+- Continuously correct for odometry drift, wheel slip, and field inconsistencies
+- Power advanced autonomous routines and complex path planning
 
-The file `src/monte.cpp` likely contains the core logic for the Monte Carlo Localization algorithm.
+## Why Monte Carlo Localization?
 
-## General Features
+Traditional VEX V5 robots rely on odometry and IMU sensors for local movement tracking. However, these methods are prone to accumulating errors and can be disrupted by real-world factors like wheel slip or field imperfections, leading to unreliable autonomous performance.
+
+**Monte Carlo Localization (MCL)** solves these problems by maintaining a probabilistic estimate of the robot's global position. By fusing multiple sensor inputs and using a particle filter, MCL delivers:
+
+- Robust, accurate global position tracking
+- Resilience to sensor noise and field inconsistencies
+- Consistent, repeatable autonomous routines
+
+This approach directly addresses the root causes of autonomous failures and elevates the reliability of VEX V5 robots in competition.
+
+## 🛠️ General Features
 
 - Dual joystick tank drive with an exponential drive curve
 - Autonomous mode selection via LVGL GUI
 - Intake control system
-- Pneumatic systems for mobile goal clamp and intake positioning
+- Pneumatic systems for mobile goal clamp
 - Temperature monitoring for drivetrain and intake motors
 - Reverse drive functionality
 - Match timer with controller rumble alert
-- And many more driver convenience features
+- Numerous driver convenience features
 
-## Hardware Configuration
+## ⚙️ Hardware Configuration
 
 - **Drivetrain:** 3 motors per side (66W)
 - **Intake:** 1.5 motors (16.5W)
-- **Lady Brown** 0.5 motors (5.5W)
+- **Lady Brown:** 0.5 motors (5.5W)
 - **Sensors:**
     - IMU
     - Horizontal tracking wheel
@@ -40,34 +51,33 @@ The file `src/monte.cpp` likely contains the core logic for the Monte Carlo Loca
 - **Pneumatics:**
     - Mobile goal clamp (large)
 
-## Usage
+## 🕹️ Usage
 
-1.  Flash the program to your VEX V5 brain.
-2.  Run the program.
-3.  Use the LVGL GUI on the brain screen to select an autonomous mode.
-4.  **Driver Control:**
+1. Flash the program to your VEX V5 brain.
+2. Run the program.
+3. Use the LVGL GUI on the brain screen to select an autonomous mode.
+4. In driver control:
     - Left/Right Joysticks: Control drivetrain
     - R1/R2 Buttons: Control intake
     - L1 Button: Toggle mobile goal clamp
     - L2 Button: Toggle intake position
     - B Button: Toggle reverse drive
 
-## Autonomous Modes
+## 🤖 Autonomous Modes
 
-The following autonomous modes are available:
+- **Close Side (Default)**
+- **Far Side**
+- **Skills**
+- **Off**
 
--   `auto.cpp`: Contains logic for regular autonomous routines.
-    - Close Side (Default)
-    - Far Side
--   `skills.cpp`: Contains logic for skills autonomous routines.
--   Off
+Autonomous routines are implemented in [`src/auto.cpp`](src/auto.cpp) and [`src/skills.cpp`](src/skills.cpp).
 
-## Code Snippet: Monte Carlo Localization Update Cycle
+## 🧠 Monte Carlo Localization Update Cycle
 
-This shows the core Monte Carlo Localization (MCL) update cycle implemented in this project:
+The following diagram illustrates the core Monte Carlo Localization (MCL) update cycle implemented in this project:
 
 <p align="center">
-  <img src="include/mcl.png" alt="Monte Carlo Localization Update Cycle" width="6000"/>
+  <img src="include/mcl.png" alt="Monte Carlo Localization Update Cycle" width="900"/>
 </p>
 
 This function demonstrates the essential steps of MCL:
@@ -79,50 +89,44 @@ This function demonstrates the essential steps of MCL:
 
 This cycle enables robust and accurate localization on the VEX V5 platform, even in the presence of sensor noise and uncertainty.
 
-## Why Monte Carlo Localization?
+## 📁 Key Files and Directories
 
-Traditional VEX V5 robots often rely on odometry and IMU sensors to estimate their position. While this works for tracking local movement, it is prone to accumulating errors and can be thrown off by field inconsistencies, wheel slip, or sensor drift. These issues often lead to unreliable autonomous routines and inconsistent performance in competition.
+- [`src/main.cpp`](src/main.cpp): Main entry point, driver control logic, and GUI interaction
+- [`src/auto.cpp`](src/auto.cpp): Autonomous routines for matches
+- [`src/skills.cpp`](src/skills.cpp): Autonomous routines for skills challenges
+- [`src/monte.cpp`](src/monte.cpp): Monte Carlo Localization implementation
+- [`src/globals.cpp`](src/globals.cpp): Global variables
+- [`include/main.h`](include/main.h): Header for main logic
+- [`include/globals.h`](include/globals.h): Header for globals
+- [`include/robot/`](include/robot/): Robot-specific configurations and classes
+- [`liblvgl/`](liblvgl/): LVGL graphics library
+- [`lemlib/`](lemlib/): LemLib drivetrain and odometry library
+- [`project.pros`](project.pros): PROS project configuration
+- [`Makefile`](Makefile): Build instructions
 
-**Monte Carlo Localization (MCL)** solves this by continuously estimating the robot's global position on the field, not just its local movement. By fusing data from multiple sensors and using a probabilistic approach, MCL can correct for errors and adapt to real-world uncertainties. This results in:
+## 📚 Libraries Used
 
-- Robust, accurate global position tracking
-- Greater resilience to field inconsistencies and sensor noise
-- More reliable and repeatable autonomous routines
+- [PROS](https://pros.cs.purdue.edu/v5/pros-4/): C/C++ SDK for VEX V5
+- [LemLib](https://lemlib.readthedocs.io/): Advanced drivetrain control and odometry
+- [LVGL](https://docs.lvgl.io/master/): Lightweight graphics library for embedded systems
 
-By using MCL, this project addresses the root causes of many autonomous failures and sets a new standard for motion control in VEX V5 robotics.
+## 🏗️ Building the Project
 
-## Key Files and Directories
+1. Ensure you have the PROS CLI installed.
+2. Navigate to the project root in your terminal.
+3. Run:
+   ```sh
+   pros m
+   ```
 
--   `src/main.cpp`: Main entry point of the program, contains driver control logic and GUI interaction.
--   `src/auto.cpp`: Implements the autonomous routines for matches.
--   `src/skills.cpp`: Implements the autonomous routines for skills challenges.
--   `src/monte.cpp`: Likely contains additional robot control logic or helper functions (based on file name).
--   `src/globals.cpp`: Defines global variables used across the project.
--   `include/main.h`: Header file for `main.cpp`.
--   `include/globals.h`: Header file for `globals.cpp`.
--   `include/robot/`: Likely contains robot-specific configurations or classes.
--   `liblvgl/`: Contains the LVGL library for the graphical user interface.
--   `lemlib/`: Contains the LemLib library for drivetrain control and odometry.
--   `project.pros`: PROS project configuration file.
--   `Makefile`: Used for building the project.
+## 🔌 Flashing to V5 Brain
 
-## Libraries Used
+1. Connect your VEX V5 Brain to your computer.
+2. Run:
+   ```sh
+   pros u
+   ```
 
--   [PROS](https://pros.cs.purdue.edu/v5/pros-4/): A C/C++ SDK for the VEX V5 platform.
--   [LemLib](https://lemlib.readthedocs.io/): A library for advanced drivetrain control and odometry.
--   [LVGL](https://docs.lvgl.io/master/): A lightweight graphics library for embedded systems.
-
-## Building the Project
-
-1.  Ensure you have the PROS CLI installed.
-2.  Navigate to the project's root directory in your terminal.
-3.  Run the command `pros m`.
-
-## Flashing to V5 Brain
-
-1.  Connect your VEX V5 Brain to your computer.
-2.  Run the command `pros u`.
-
-## License
+## 📝 License
 
 This project is currently unlicensed.
