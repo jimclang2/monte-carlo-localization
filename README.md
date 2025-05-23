@@ -74,7 +74,7 @@ Autonomous routines are implemented in [`src/auto.cpp`](src/auto.cpp) and [`src/
 
 ## 🧠 Monte Carlo Localization Update Cycle
 
-The following diagram illustrates the core Monte Carlo Localization (MCL) update cycle implemented in this project:
+The following code snippet illustrates the core Monte Carlo Localization (MCL) update cycle implemented in this project:
 
 <p align="center">
   <img src="include/mcl.png" alt="Monte Carlo Localization Update Cycle" width="900"/>
@@ -115,7 +115,7 @@ This cycle enables robust and accurate localization on the VEX V5 platform, even
 1. Ensure you have the PROS CLI installed.
 2. Navigate to the project root in your terminal.
 3. Run:
-   ```sh
+   ```zsh
    pros m
    ```
 
@@ -123,7 +123,7 @@ This cycle enables robust and accurate localization on the VEX V5 platform, even
 
 1. Connect your VEX V5 Brain to your computer.
 2. Run:
-   ```sh
+   ```zsh
    pros u
    ```
 
