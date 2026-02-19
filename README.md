@@ -5,7 +5,9 @@
     <a href="https://github.com/uz-g/monte-carlo-localization/stargazers"><img src="https://img.shields.io/github/stars/uz-g/monte-carlo-localization?style=for-the-badge&logo=apachespark&color=eed49f&logoColor=D9E0EE&labelColor=302D41"></a>
 </p>
 
-This project implements an advanced motion control system for the VEX V5 platform, with a core focus on **Monte Carlo Localization (MCL)**, designed for the VEX High Stakes competition season. It utilizes PROS and LemLib.
+This project implements an advanced motion control system for the VEX V5 platform, with a core focus on **Monte Carlo Localization (MCL)**, updated for the **VEX Push Back** competition season. It utilizes PROS and LemLib.
+
+> **Note:** This codebase was originally built for High Stakes and has been cleaned up as a template for Push Back. Hardware ports, PID values, and autonomous routines are **placeholders** that must be configured for your new robot.
 
 ## 🚀 Core Feature: Monte Carlo Localization
 
@@ -16,116 +18,77 @@ At the heart of this system is a full-featured Monte Carlo Localization (MCL) en
 - Continuously correct for odometry drift, wheel slip, and field inconsistencies
 - Power advanced autonomous routines and complex path planning
 
-## Why Monte Carlo Localization?
+## 🧠 MCL Update Cycle
 
-Traditional VEX V5 robots rely on odometry and IMU sensors for local movement tracking. However, these methods are prone to accumulating errors and can be disrupted by real-world factors like wheel slip or field imperfections, leading to unreliable autonomous performance.
+1. **Motion Update (Prediction):** Predicts the robot's new pose based on odometry movement
+2. **Measurement Update (Correction):** Adjusts particle weights using distance sensor measurements
+3. **Resampling:** Resamples the particle set to focus on the most likely poses
+4. **Pose Estimation:** Computes the estimated position with exponential smoothing
 
-**Monte Carlo Localization (MCL)** solves these problems by maintaining a probabilistic estimate of the robot's global position. By fusing multiple sensor inputs and using a particle filter, MCL delivers:
+### Push Back Considerations
 
-- Robust, accurate global position tracking
-- Resilience to sensor noise and field inconsistencies
-- Consistent, repeatable autonomous routines
+Push Back Goals are physical structures on the field that **will obstruct distance sensors**. The MCL sensor model (`predictSensorReading`) currently only accounts for field perimeter walls. You should:
 
-This approach directly addresses the root causes of autonomous failures and elevates the reliability of VEX V5 robots in competition.
-
-## 🛠️ General Features
-
-- Dual joystick tank drive with an exponential drive curve
-- Autonomous mode selection via LVGL GUI
-- Intake control system
-- Pneumatic systems for mobile goal clamp
-- Temperature monitoring for drivetrain and intake motors
-- Reverse drive functionality
-- Match timer with controller rumble alert
-- Numerous driver convenience features
+- Use the sensor enable/disable flags (`useNorthSensor`, etc.) to turn off sensors aimed at Goals
+- Consider adding Goal bounding boxes to the sensor model for more accurate predictions
+- Filter out unexpectedly short readings that are likely hitting Goal structures
 
 ## ⚙️ Hardware Configuration
 
-- **Drivetrain:** 3 motors per side (66W)
-- **Intake:** 1.5 motors (16.5W)
-- **Lady Brown:** 0.5 motors (5.5W)
-- **Sensors:**
-    - IMU
-    - Horizontal tracking wheel
-    - 4 Distance sensors
-- **Pneumatics:**
-    - Mobile goal clamp (large)
+All hardware is defined in [`src/globals.cpp`](src/globals.cpp). **All ports and values are placeholders — update them for your robot.**
 
-## 🕹️ Usage
+- **Drivetrain:** 3 motors per side (configured for blue cartridges)
+- **Sensors:** IMU, horizontal tracking wheel, 4 distance sensors
+- **Pneumatics:** 1 ADI pneumatic
+- **Subsystem motors:** TBD — define your Push Back mechanisms
 
-1. Flash the program to your VEX V5 brain.
-2. Run the program.
-3. Use the LVGL GUI on the brain screen to select an autonomous mode.
-4. In driver control:
-    - Left/Right Joysticks: Control drivetrain
-    - R1/R2 Buttons: Control intake
-    - L1 Button: Toggle mobile goal clamp
-    - L2 Button: Toggle intake position
-    - B Button: Toggle reverse drive
+## 🕹️ Driver Control
+
+Tank drive is configured. Mechanism controls are stubbed out in [`src/main.cpp`](src/main.cpp).
+
+**Push Back timing:**
+- Autonomous Period: 15 seconds
+- Driver Controlled Period: 1:45 (105 seconds)
+- Endgame (Park Zone protection): last 20 seconds
 
 ## 🤖 Autonomous Modes
 
-- **Close Side (Default)**
-- **Far Side**
-- **Skills**
-- **Off**
+Stub routines are in [`src/auto.cpp`](src/auto.cpp):
 
-Autonomous routines are implemented in [`src/auto.cpp`](src/auto.cpp) and [`src/skills.cpp`](src/skills.cpp).
+- **redNeg** / **redPos** — Red alliance routines
+- **blueNeg** / **bluePos** — Blue alliance routines
+- **skills** — Skills challenge ([`src/skills.cpp`](src/skills.cpp))
 
-## 🧠 Monte Carlo Localization Update Cycle
+## 📁 Key Files
 
-The following code snippet illustrates the core Monte Carlo Localization (MCL) update cycle implemented in this project:
+| File | Purpose |
+|---|---|
+| `src/main.cpp` | Init, driver control, GUI |
+| `src/auto.cpp` | Match autonomous stubs |
+| `src/skills.cpp` | Skills autonomous stub |
+| `src/monte.cpp` | **MCL engine** (preserved from High Stakes) |
+| `src/globals.cpp` | Hardware definitions (all ports are placeholders) |
+| `include/globals.h` | Hardware declarations |
+| `include/robot/monte.hpp` | MCL API header |
 
-<p align="center">
-  <img src="include/mcl.png" alt="Monte Carlo Localization Update Cycle" width="900"/>
-</p>
+## 📚 Libraries
 
-This function demonstrates the essential steps of MCL:
+- [PROS 4.1.1](https://pros.cs.purdue.edu/v5/pros-4/) — C/C++ SDK for VEX V5
+- [LemLib 0.5.5](https://lemlib.readthedocs.io/) — Drivetrain control and odometry
+- [LVGL 8.3.8](https://docs.lvgl.io/master/) — Brain screen graphics
+- [Robodash 2.3.0](https://github.com/unwieldycat/robodash) — Autonomous selector GUI
 
-1. **Motion Update (Prediction):** Predicts the robot's new pose based on odometry (robot movement).
-2. **Measurement Update (Correction):** Adjusts the particle weights using distance sensor measurements.
-3. **Resampling:** Resamples the particle set based on their weights to focus on the most likely poses.
-4. **Pose Estimation:** Computes the robot's estimated position and updates the chassis accordingly.
+## 🏗️ Building
 
-This cycle enables robust and accurate localization on the VEX V5 platform, even in the presence of sensor noise and uncertainty.
-
-## 📁 Key Files and Directories
-
-- [`src/main.cpp`](src/main.cpp): Main entry point, driver control logic, and GUI interaction
-- [`src/auto.cpp`](src/auto.cpp): Autonomous routines for matches
-- [`src/skills.cpp`](src/skills.cpp): Autonomous routines for skills challenges
-- [`src/monte.cpp`](src/monte.cpp): Monte Carlo Localization implementation
-- [`src/globals.cpp`](src/globals.cpp): Global variables
-- [`include/main.h`](include/main.h): Header for main logic
-- [`include/globals.h`](include/globals.h): Header for globals
-- [`include/robot/`](include/robot/): Robot-specific configurations and classes
-- [`liblvgl/`](liblvgl/): LVGL graphics library
-- [`lemlib/`](lemlib/): LemLib drivetrain and odometry library
-- [`project.pros`](project.pros): PROS project configuration
-- [`Makefile`](Makefile): Build instructions
-
-## 📚 Libraries Used
-
-- [PROS](https://pros.cs.purdue.edu/v5/pros-4/): C/C++ SDK for VEX V5
-- [LemLib](https://lemlib.readthedocs.io/): Advanced drivetrain control and odometry
-- [LVGL](https://docs.lvgl.io/master/): Lightweight graphics library for embedded systems
-
-## 🏗️ Building the Project
-
-1. Ensure you have the PROS CLI installed.
-2. Navigate to the project root in your terminal.
-3. Run:
-   ```zsh
-   pros m
-   ```
+```bash
+pros m
+```
 
 ## 🔌 Flashing to V5 Brain
 
-1. Connect your VEX V5 Brain to your computer.
-2. Run:
-   ```zsh
-   pros u
-   ```
+```bash
+pros u
+```
 
 ## 📝 License
 

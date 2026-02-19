@@ -1,13 +1,32 @@
+// =============================================================================
+// Monte Carlo Localization Engine
+// =============================================================================
+// PUSH BACK SEASON NOTES:
+//   - Field is still 144" x 144" (12' x 12') — wall distance math is valid
+//   - Push Back Goals are physical structures on the field that DO obstruct
+//     distance sensors. If a sensor reads a Goal instead of a wall, particles
+//     will converge on the wrong position.
+//   - Mitigation options:
+//     1. Use sensor enable/disable flags (useNorthSensor, etc.) to turn off
+//        sensors that are aimed at Goals in known positions
+//     2. Add Goal bounding boxes to predictSensorReading() so particles
+//        account for intermediate obstacles
+//     3. Filter out readings that are significantly shorter than expected
+//        wall distance (likely hitting a Goal structure)
+//   - Sensor offsets (NORTH_SENSOR_X_OFFSET, etc.) MUST be re-measured for
+//     the new robot chassis
+// =============================================================================
+
 #include "robot/monte.hpp"
-#include "globals.h"
 #include "lemlib/chassis/chassis.hpp"
 #include "liblvgl/lvgl.h"
 #include "main.h"
 #include "pros/rtos.hpp"
-#include "robot/skills.h"
+#include "robot_config.h"
 #include <cmath>
 #include <iostream>
 #include <random>
+
 
 // Constants
 const int PARTICLE_QUANTITY = 7500; // tune
@@ -481,18 +500,18 @@ void mclTask(void *param) {
   while (mclRunning) {
     // Get distance readings and filter unreliable values
     float north = useNorthSensor ? dNorth.get() / 25.4 : -1;
-    float south = useSouthSensor ? dNorthW.get() / 25.4 : -1;
+    float south = useSouthSensor ? dSouth.get() / 25.4 : -1;
     float east = useEastSensor ? dEast.get() / 25.4 : -1;
     float west = useWestSensor ? dWest.get() / 25.4 : -1;
 
     // Apply confidence and size filters
     int north_conf = dNorth.get_confidence();
-    int south_conf = dNorthW.get_confidence();
+    int south_conf = dSouth.get_confidence();
     int east_conf = dEast.get_confidence();
     int west_conf = dWest.get_confidence();
 
     int north_size = dNorth.get_object_size();
-    int south_size = dNorthW.get_object_size();
+    int south_size = dSouth.get_object_size();
     int east_size = dEast.get_object_size();
     int west_size = dWest.get_object_size();
 

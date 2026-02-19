@@ -1,206 +1,137 @@
 #include "main.h"
-#include "api.h"
-#include "globals.h"
-#include "lemlib/api.hpp"
-#include "lemlib/chassis/chassis.hpp"
-#include "lemlib/timer.hpp"
-#include "liblvgl/lvgl.h"
-#include "main.h"
-#include "pros/device.hpp"
-#include "pros/motors.h"
-#include "pros/motors.hpp"
+#include "autonomous.h"
+#include "curves.h"
+#include "lemlib/api.hpp" // IWYU pragma: keep
 #include "pros/rtos.hpp"
-#include "robodash/core.h"
-#include "robot/auton.h"
 #include "robot/monte.hpp"
-#include "robot/skills.h"
-#include <iostream>
+#include "robot_config.h"
+#include "subsystems/intake.h"
+#include "subsystems/outtake.h"
+#include "subsystems/pneumatics.h"
+#include <string>
 
-using namespace lemlib;
+void initialize() { initializeRobot(); }
 
-rd::Selector selector({{"redNeg", &redNeg},
-                       {"redPos", &redPos},
-                       {"blueNeg", &blueNeg},
-                       {"bluePos", &bluePos},
-                       {"skills", &skills1}});
+void disabled() {}
 
-rd::Console console;
-
-/**
- * A callback function for LLEMU's center button.
- *
- * When this callback is fired, it will toggle line 2 of the LCD text between
- * "I was pressed!" and nothing.
- */
-
-/**
- * Runs initialization code. This occurs as soon as the program is started.
- *
- * All other competition modes are blocked by initialize; it is recommended
- * to keep execution time for this mode under a few seconds.
- */
-void initialize() {
-  pros::lcd::initialize(); // initialize brain screen
-  selector.focus();
-  chassis.calibrate(); // calibrate sensors
-  chassis.setPose(0, 0, 0);
-  lady_brown.set_zero_position_all(0);
-  selector.on_select([](std::optional<rd::Selector::routine_t> routine) {
-    if (routine == std::nullopt) {
-      std::cout << "No routine selected" << std::endl;
-    } else {
-      std::cout << "Selected Routine: " << routine.value().name << std::endl;
-    }
-  });
-  // /*
-  pros::Task screenTask([&]() {
-    while (true) {
-
-      // print robot location to the brain screen
-      pros::lcd::print(0, "X: %f", chassis.getPose().x);         // x
-      pros::lcd::print(1, "Y: %f", chassis.getPose().y);         // y
-      pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
-      pros::lcd::print(3, "LB Deg: %f", lady_brown.get_position());
-
-      // Print distance sensor values in inches
-      pros::lcd::print(4, "N: %.2f in", dNorth.get_distance() / 25.4);
-      pros::lcd::print(5, "E: %.2f in", dEast.get_distance() / 25.4);
-      pros::lcd::print(6, "S: %.2f in", dNorthW.get_distance() / 25.4);
-      pros::lcd::print(7, "W: %.2f in", dWest.get_distance() / 25.4);
-
-      // log position telemetry
-      lemlib::telemetrySink()->info("Chassis pose: {}",
-                                    chassis.getPose()); // log file to sd card
-      // delay to save resources
-      pros::delay(50);
-    }
-  });
-  // */
-}
-
-/**
- * Runs while the robot is in the disabled state of Field Management System or
- * the VEX Competition Switch, following either autonomous or opcontrol. When
- * the robot is enabled, this task will exit.
- */
-void disabled() {
-  // unclamp
-  // clamp.retract();
-}
-
-/**
- * Runs after initialize(), and before autonomous when connected to the Field
- * Management System or the VEX Competition Switch. This is intended for
- * competition-specific initialization routines, such as an autonomous selector
- * on the LCD.
- *
- * This task will exit when the robot is enabled and autonomous or opcontrol
- * starts.
- */
-void competition_initialize() { selector.focus(); }
-
-/**
- * Runs the user autonomous code. This function will be started in its own task
- * with the default priority and stack size whenever the robot is enabled via
- * the Field Management System or the VEX Competition Switch in the autonomous
- * mode. Alternatively, this function may be called in initialize or opcontrol
- * for non-competition testing purposes.
- *
- * If the robot is disabled or communications is lost, the autonomous task
- * will be stopped. Re-enabling the robot will restart the task, not re-start it
- * from where it left off.
- */
+void competition_initialize() {}
 
 void autonomous() {
-  // redNeg();
-  skills1();
-  // Auton3();
-  // test360();
-  selector.run_auton();
+  skills_auton();
+  // leftAuton();
+  // rightAuton();
+  // leftAuton_descore();
 }
 
-// Create MCL instance using the existing distance sensors
+// Small deadband to prevent drift (applies to values close to 0)
+int applyDeadband(int value, int threshold = 8) {
+  return (abs(value) < threshold) ? 0 : value;
+}
 
-/**
- * Runs the operator control code. This function will be started in its own task
- * with the default priority and stack size whenever the robot is enabled via
- * the Field Management System or the VEX Competition Switch in the operator
- * control mode.
- *
- * If no competition control is connected, this function will run immediately
- * following initialize().
- *
- * If the robot is disabled or communications is lost, the
- * operator control task will be stopped. Re-enabling the robot will restart the
- * task, not resume it from where it left off.
- */
 void opcontrol() {
-  // autonomous();
-  stopMCL();
-  hooks.move_absolute(600, 600);
-  // startMCL(chassis);
-  chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
-  bool flagged = false;
-  lady_brown.move_absolute(0, 200);
-  hooks.move_velocity(0);
-  enum LadyBrownState { IDLE, PRIMED, SCORED };
-  lemlib::Timer matchTimer(66000);
-  lemlib::Timer cornerProtection(76000);
+  stopMCL(); // Stop MCL if it was running during autonomous
 
-  // Static variable to track current state
-  static LadyBrownState ladyBrownState = IDLE;
+  IntakeControl intake;
+  OuttakeControl outtake;
+  PneumaticControl pneumatics;
 
-  // loop forever
+  // Initialize descore piston to extended position
+  Descore.set_value(true);
+
+  // ── Joystick curve selection ──
+  CurveType activeCurve = CurveType::SQUARED;
+  bool curveButtonPressed = false;
+
+  // Tracking for warnings
+  uint32_t lastTempCheck = 0;
+  uint32_t lastBatteryCheck = 0;
+  bool lowBatteryWarned = false;
+
   while (true) {
 
-    if (matchTimer.isDone() && flagged == false) { // warning
-      // controller.rumble(". - . -");
-    } else if (cornerProtection.isDone()) {
-      flagged = true;
-    }
-    // get left y and right y positions
-    float leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-    float rightY = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+    // Display intake current draw + active curve on brain screen
+    pros::screen::set_pen(pros::c::COLOR_WHITE);
+    pros::screen::fill_rect(0, 0, 480, 40);
+    pros::screen::set_pen(pros::c::COLOR_BLACK);
+    pros::screen::print(
+        pros::E_TEXT_LARGE, 10, 10, "Intake mA: %d  |  Curve: %s",
+        Intake.get_current_draw(), getCurveName(activeCurve).c_str());
 
-    // move the robot
-    chassis.tank(leftY, rightY);
-
-    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-
-      preroller.move_velocity(200);
-      hooks.move_velocity(600);
-    } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-      hooks.move_velocity(-600);
-      preroller.move_velocity(-200);
+    // ── Cycle curve with DOWN arrow ──
+    if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+      if (!curveButtonPressed) {
+        activeCurve = nextCurve(activeCurve);
+        master.print(2, 0, "Curve: %s       ",
+                     getCurveName(activeCurve).c_str());
+        curveButtonPressed = true;
+      }
     } else {
-      preroller.brake();
-      hooks.brake();
-    }
-    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2)) {
-      clamp.toggle();
+      curveButtonPressed = false;
     }
 
-    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1)) {
-      switch (ladyBrownState) {
-      case IDLE:
-        lady_brown.move_absolute(72, 200); // Move to primed position
-        ladyBrownState = PRIMED;
-        break;
+    // Tank Drive with deadband + curve
+    int left = applyCurve(
+        applyDeadband(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)),
+        activeCurve);
+    int right = applyCurve(
+        applyDeadband(master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y)),
+        activeCurve);
+    left_motors.move(left);
+    right_motors.move(right);
 
-      case PRIMED:
-        lady_brown.move_absolute(425, 200); // Maintain primed position
-        hooks.move_relative(-120, -600);
-        pros::delay(60);
-        ladyBrownState = SCORED; // optimal scoring when robot is x" away from
-                                 // wall / when north sensor reads 17" or 14"
-        break;
+    // Update subsystems
+    outtake.update(intake);
+    intake.update(outtake);
+    pneumatics.update();
 
-      case SCORED:
-        lady_brown.move_absolute(0, 80); // Move to scoring position
-        ladyBrownState = IDLE;
-        break;
+    // === MOTOR TEMPERATURE MONITORING (every 2 seconds) ===
+    if (pros::millis() - lastTempCheck > 2000) {
+      lastTempCheck = pros::millis();
+
+      double maxTemp = 0;
+      std::string hotMotor = "";
+
+      auto leftTemps = left_motors.get_temperature_all();
+      auto rightTemps = right_motors.get_temperature_all();
+
+      for (double temp : leftTemps) {
+        if (temp > maxTemp) {
+          maxTemp = temp;
+          hotMotor = "L-Drive";
+        }
+      }
+      for (double temp : rightTemps) {
+        if (temp > maxTemp) {
+          maxTemp = temp;
+          hotMotor = "R-Drive";
+        }
+      }
+      if (Intake.get_temperature() > maxTemp) {
+        maxTemp = Intake.get_temperature();
+        hotMotor = "Intake";
+      }
+      if (Outtake.get_temperature() > maxTemp) {
+        maxTemp = Outtake.get_temperature();
+        hotMotor = "Outtake";
+      }
+
+      if (maxTemp >= 50) {
+        master.print(0, 0, "HOT: %s %.0fC   ", hotMotor.c_str(), maxTemp);
       }
     }
+
+    // === LOW BATTERY WARNING (10%) ===
+    if (pros::millis() - lastBatteryCheck > 5000) {
+      lastBatteryCheck = pros::millis();
+
+      int batteryLevel = pros::battery::get_capacity();
+      if (batteryLevel <= 10 && !lowBatteryWarned) {
+        master.rumble("---");
+        master.print(1, 0, "LOW BATTERY: %d%%", batteryLevel);
+        lowBatteryWarned = true;
+      }
+    }
+
     pros::delay(20);
   }
 }
